@@ -33,6 +33,7 @@ class BienMappers
     public static function DTOToBien(BienDTO $dto)
     {
         $bien = new Biens();
+
         $bien->setTitle($dto->getTitle());
         $bien->setDescription($dto->getDescription());
         $bien->setSurface($dto->getSurface());
@@ -45,7 +46,28 @@ class BienMappers
         $bien->setAddress($dto->getAddress());
         $bien->setPostalCode($dto->getPostalCode());
         $bien->setSold($dto->isSold());
-        $bien->setCreatedAt(new \DateTimeImmutable());
+        $bien->setCreatedAt(new \DateTime());
+        $bien->setType($dto->getType());
+
+        return $bien;
+    }
+
+    public static function DTOToBienUpdate(BienDTO $dto, $bien)
+    {
+
+        $bien->setTitle($dto->getTitle());
+        $bien->setDescription($dto->getDescription());
+        $bien->setSurface($dto->getSurface());
+        $bien->setRooms($dto->getRooms());
+        $bien->setBedrooms($dto->getBedrooms());
+        $bien->setFloor($dto->getFloor());
+        $bien->setPrice($dto->getPrice());
+        $bien->setHeat($dto->getHeat());
+        $bien->setCity($dto->getCity());
+        $bien->setAddress($dto->getAddress());
+        $bien->setPostalCode($dto->getPostalCode());
+        $bien->setSold($dto->isSold());
+        $bien->setCreatedAt(new \DateTime());
         $bien->setType($dto->getType());
 
         return $bien;

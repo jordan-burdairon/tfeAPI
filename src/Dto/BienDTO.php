@@ -19,7 +19,7 @@ class BienDTO
     private string $address;
     private string $postal_code;
     private bool $sold = false;
-    private \DateTimeImmutable $created_at;
+    private \DateTime $created_at;
     private string $image_front;
     private string $type;
 
@@ -260,7 +260,7 @@ class BienDTO
     /**
      * @return \DateTime
      */
-    public function getCreatedAt(): \DateTimeImmutable
+    public function getCreatedAt(): \DateTime
     {
         return $this->created_at;
     }
@@ -269,7 +269,7 @@ class BienDTO
      * @param \DateTime $created_at
      * @return BienDTO
      */
-    public function setCreatedAt(\DateTimeImmutable $created_at): BienDTO
+    public function setCreatedAt(\DateTime $created_at): BienDTO
     {
         $this->created_at = $created_at;
         return $this;

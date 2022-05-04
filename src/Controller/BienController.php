@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
+use FOS\RestBundle\Controller\Annotations\Put;
 use FOS\RestBundle\Controller\Annotations\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -19,7 +20,7 @@ class BienController extends AbstractFOSRestController
     #[View]
     public function getAll(BiensRepository $repo) {
         $biens = $repo->findBy(['sold' => false]);
-        return  array_map(fn($item) => BienMappers::toBienDTO($item), $biens);
+        return array_map(fn($item) => BienMappers::toBienDTO($item), $biens);
     }
 
     #[Get('/api/bien/{id}')]
@@ -52,4 +53,30 @@ class BienController extends AbstractFOSRestController
         return $bien->getId();
 
     }
+
+    #[Put('api/bien/{id}')]
+    #[View]
+    #[ParamConverter('dto', converter: 'fos_rest.request_body')]
+    public function editBien(int $id, BienDTO $dto, BiensRepository $repo, EntityManagerInterface $em)
+    {
+        $bien = $repo->find($id);
+        $dto = BienMappers::DTOToBienUpdate($dto, $bien);
+        $em->flush();
+
+
+        return $dto;
+    }
+
+    #[Get('/api/bien')]
+    #[View]
+    public function getLastFour(BiensRepository $repo, EntityManagerInterface $em)
+    {
+        $biens = $repo->findAll();
+        $bien = $repo->findBy(['sold' => false], ['id' => 'DESC'], 4, 0);
+
+        return  array_map(fn($item) => BienMappers::toBienDTO($item), $bien);
+    }
+
+
+
 }
